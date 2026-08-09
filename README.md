@@ -2,20 +2,20 @@
 
 Deploy portable gravity wells that pull, spin, and shred anything nearby, with
 a fully procedural black hole rendered in Unity meshes — no video, no
-pre-baked sprite. Runs on FruitLib.
+pre-baked sprite. Runs on [FruitLib](https://github.com/Luca-Nero/FruitLib).
 
 ---
 
 ## Features
 
 ### Deploy
-Press **R** to look somewhere and drop a singularity at your aim point (a
+Press **B** to look somewhere and drop a singularity at your aim point (a
 raycast finds the surface; if nothing's hit, it places at half `SpawnRange`
 along your view). Half-second cooldown between deploys. Each one lives for
 `Lifetime` seconds, then collapses and despawns.
 
 ### Two hole types
-Press **F5** to pick what the *next* deploy will be — existing holes keep
+Press **F5** to pick what the *next* deploy will be, existing holes keep
 whatever type they were spawned as, so both can be out at once:
 - **Kerr (rotating)** — accretion disk, spiralling motes, lensed arcs, tangential
   spin force on anything caught in the pull.
@@ -44,7 +44,7 @@ over a few seconds. Kerr and Schwarzschild have independent brightness, glow,
 sky-darkening, and RGB tint knobs, since a stationary hole with no disk needs
 a different visual balance than a spinning one. Most emissive layers push
 brightness over 1 (`*EmissionBoost`) and rely on HDR + bloom to read — see
-[FruitLib's VFX notes](../5_FruitLib) if bloom isn't visibly kicking in.
+[FruitLib's VFX notes](https://github.com/Luca-Nero/FruitLib) if bloom isn't visibly kicking in.
 
 ### Debug
 `DebugLevel` 1 logs deploy/collapse events, 2 adds verbose per-frame physics
@@ -61,7 +61,7 @@ affected rigidbodies across all of them.
 ---
 
 ## How to Install
-1. Install FruitLib first, Singularity won't start without it.
+1. Install [FruitLib](https://github.com/Luca-Nero/FruitLib) first, Singularity won't start without it.
 2. Drag **Singularity.dll** into your `Mods/` folder.
 3. Run the game — `SingularityConfig.ini` appears next to the DLL on first launch.
 
@@ -75,7 +75,7 @@ affected rigidbodies across all of them.
 
 | Key | Action |
 |-----|--------|
-| Z | Deploy singularity at aim point |
+| B | Deploy singularity at aim point |
 | F5 | Toggle next-deploy type (Kerr / Schwarzschild) |
 
 Remap in `SingularityConfig.ini`, or live in FruitLib's menu.
