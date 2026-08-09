@@ -1,0 +1,129 @@
+using FruitLib;
+using MelonLoader;
+using System.Collections.Generic;
+using UnityEngine;
+using HarmonyLib;
+
+[assembly: MelonInfo(typeof(Singularity.Core), "Singularity", "1.0.0", "Luca_Nero")]
+[assembly: MelonGame()]
+
+namespace Singularity
+{
+
+    public class Core : MelonMod
+    {
+        public const string Version = "1.0.0";
+
+        // ── Input ───────────────────────────────────────────────────────────────
+        private static float _deployCooldown;
+
+        public override void OnInitializeMelon()
+        {
+            ConfigLoader.Load();
+            FruitMenu.Register("Singularity", ConfigLoader.IniPath, typeof(Config));
+            FruitHud.Register("Singularity", BuildHud, order: 20);
+
+            FruitPerfMon.RegisterCounter("Singularities", () => HoleManager.ActiveCount);
+            FruitPerfMon.RegisterCounter("Affected RBs",  () => HoleManager.AffectedRbs());
+
+            LoggerInstance.Msg($"Singularity v{Version} — portable gravity well mod loaded.");
+        }
+
+        public override void OnUpdate()
+        {
+            float dt = Time.deltaTime;
+
+            if (!FruitMenu.IsInputSuppressed)
+            {
+                if (Input.GetKeyDown(Config.DeployKey))
+                {
+                    if (_deployCooldown <= 0f)
+                    {
+                        HoleManager.TryDeploy();
+                        _deployCooldown = 0.5f; // half-second cooldown between deployments
+                    }
+                }
+
+                if (Input.GetKeyDown(Config.HoleTypeKey))
+                {
+                    Config.SpawnRotating = !Config.SpawnRotating;
+                    LoggerInstance.Msg($"Next singularity: {(Config.SpawnRotating ? "Kerr (rotating)" : "Schwarzschild (stationary)")}");
+                }
+
+                if (Input.GetKeyDown(Config.ShaderDumpKey))
+                {
+                    DumpAllShaders();
+                }
+
+                _deployCooldown = Mathf.Max(0f, _deployCooldown - dt);
+            }
+
+            HoleManager.Update(dt);
+        }
+
+        public override void OnFixedUpdate()
+        {
+            HoleManager.FixedUpdate(Time.fixedDeltaTime);
+        }
+
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            HoleManager.ClearAll();
+            if (Config.Dbg1)
+                LoggerInstance.Msg($"[Singularity] Scene '{sceneName}' loaded — cleared active singularities.");
+        }
+
+        private static void BuildHud(HudPanel p)
+        {
+            string type = Config.SpawnRotating ? "KERR" : "SCHWARZSCHILD";
+            p.Line($"[ {Config.DeployKey} ] Deploy Singularity");
+            p.Line($"[ {Config.HoleTypeKey} ] Type: {type}");
+
+            int active = HoleManager.ActiveCount;
+            if (active > 0)
+            {
+                p.Line($"⬤ Active: {active}");
+                p.Line($"  Affected: {HoleManager.AffectedRbs()} bodies");
+                p.Line($"  Pull: {Config.PullRadius}m @ {Config.PullForce}N");
+            }
+
+            if (Config.Dbg1)
+            {
+                p.Separator();
+                p.Line($"Debug | PullForce={Config.PullForce} Falloff={Config.PullFalloff}", HudPanel.Dim);
+                p.Line($"       Spin={Config.SpinForce} Acc={Config.AccretionThreshold}", HudPanel.Dim);
+            }
+        }
+
+        private static void DumpAllShaders()
+        {
+            try
+            {
+                var shaders = Resources.FindObjectsOfTypeAll<Shader>();
+                var names = new List<string>();
+                foreach (var s in shaders)
+                {
+                    if (s == null) continue;
+                    names.Add(s.name);
+                }
+                names.Sort(System.StringComparer.OrdinalIgnoreCase);
+
+                string path = System.IO.Path.Combine(
+                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                    "SingularityShaderDump.txt");
+
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine($"# {names.Count} shaders loaded at time of dump");
+                foreach (var n in names) sb.AppendLine(n);
+
+                System.IO.File.WriteAllText(path, sb.ToString());
+                MelonLogger.Msg($"[Singularity] Dumped {names.Count} shader names to {path}");
+            }
+            catch (System.Exception e)
+            {
+                MelonLogger.Warning($"[Singularity] Shader dump failed: {e.Message}");
+            }
+        }
+
+    }
+}
