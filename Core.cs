@@ -26,6 +26,8 @@ namespace Singularity
             FruitPerfMon.RegisterCounter("Singularities", () => HoleManager.ActiveCount);
             FruitPerfMon.RegisterCounter("Affected RBs",  () => HoleManager.AffectedRbs());
 
+            FruitUpdateCheck.Register("Singularity", Version, "Luca-Nero", "Singularity");
+
             LoggerInstance.Msg($"Singularity v{Version} — portable gravity well mod loaded.");
         }
 
