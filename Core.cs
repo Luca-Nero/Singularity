@@ -12,7 +12,7 @@ namespace Singularity
 
     public class Core : MelonMod
     {
-        public const string Version = "1.0.3";
+        public const string Version = "1.0.4";
 
         // ── Input ───────────────────────────────────────────────────────────────
         private static float _deployCooldown;

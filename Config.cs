@@ -5,7 +5,7 @@ namespace Singularity
     internal static class Config
     {
         // ── Controls ──────────────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Controls")] public static KeyCode DeployKey = KeyCode.R;
+        [FruitLib.MenuCategory("Controls")] public static KeyCode DeployKey = KeyCode.B;
         [FruitLib.MenuCategory("Controls")] public static KeyCode HoleTypeKey = KeyCode.F5;
 
         // ── Physics ───────────────────────────────────────────────────────────────
@@ -67,7 +67,6 @@ namespace Singularity
         // ── Debug ─────────────────────────────────────────────────────────────────
         [FruitLib.MenuCategory("Debug")] public static int DebugLevel = 0;
         [FruitLib.MenuCategory("Debug")] public static bool DebugDrawRadius = false;
-        [FruitLib.MenuCategory("Debug")] public static KeyCode ShaderDumpKey = KeyCode.B;
 
         // ── Helpers ───────────────────────────────────────────────────────────────
         public static bool Dbg1 => DebugLevel >= 1;

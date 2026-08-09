@@ -1,75 +1,39 @@
-# Singularity v1.0
+# Singularity
 
-Deploy portable gravity wells that pull, spin, and shred anything nearby, with
-a fully procedural black hole rendered in Unity meshes — no video, no
-pre-baked sprite. Runs on [FruitLib](https://github.com/Luca-Nero/FruitLib).
+![Version](https://img.shields.io/github/v/release/Luca-Nero/Singularity?style=flat-square)
+![Game Version](https://img.shields.io/badge/Game-v0.1%2B-blue?style=flat-square)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Donate-ff5e5b?style=flat-square&logo=ko-fi&logoColor=white)](https://ko-fi.com/Luca_Nero)
+
+Deploy portable gravity wells that pull, spin, and shred anything nearby. Each one is a fully procedural black hole built from runtime-generated Unity meshes - accretion disk, photon ring, lensed arcs, and infalling motes - with no video and no pre-baked sprite anywhere in the pipeline.
 
 ---
 
 ## Features
 
-### Deploy
-Press **B** to look somewhere and drop a singularity at your aim point (a
-raycast finds the surface; if nothing's hit, it places at half `SpawnRange`
-along your view). Half-second cooldown between deploys. Each one lives for
-`Lifetime` seconds, then collapses and despawns.
+- **Deploy:** Press **R** to drop a singularity at your aim point. A raycast finds the surface; if nothing is hit, it places at half `SpawnRange` along your view. Half-second cooldown between deploys, and each well collapses and despawns after its `Lifetime`.
+- **Two Hole Types:** Press **F5** to choose what the *next* deploy will be. Existing holes keep whatever type they spawned as, so both can be out at once.
+    - **Kerr (rotating):** Accretion disk, spiralling motes, lensed arcs, and a tangential spin force on anything caught in the pull.
+    - **Schwarzschild (stationary):** Bare shadow and photon ring only. Motes fall straight in, cold, with no spin force.
+- **Gravitational Pull:** Rigidbodies inside `PullRadius` are drawn toward the well, scaled by `PullForce` and an exponential falloff that concentrates the pull near the centre. A slight upward bias keeps the hole from simply yanking everything into the floor.
+    - **Mass Limit:** Objects heavier than `MassLimit` are ignored, and the player's own ragdoll is excluded entirely.
+- **Accretion Shredding:** Anything crossing into the visible disk - a fraction of the rendered radius set by `AccretionThreshold` - gets crushed and torn with extra impulse and torque.
+- **Procedural Visuals:** Everything is generated at runtime from ring meshes, no textures. Shadow sphere scale, disk inner/outer radius, per-hole randomised disk tilt, Doppler beaming, a spinning swirl overlay, lensed arcs above and below the shadow, and infalling motes streaked along their velocity.
+    - **Per-Type Look:** Kerr and Schwarzschild have independent brightness, glow, sky-darkening, and RGB tint knobs, since a stationary hole with no disk needs a different visual balance than a spinning one.
+    - **HDR Bloom:** Most emissive layers push brightness above 1 via `*EmissionBoost` and rely on HDR plus bloom to read properly.
+- **HUD & Perf:** A HUD panel shows the deploy key and next-spawn type, plus live count, affected body count, and pull radius/force while any hole is active. FruitLib's perf monitor (**F11**) gets two extra counters for active singularities and total affected rigidbodies.
+- **QoL Tweaks:** Active singularities are cleared automatically on scene load, `DebugLevel` 1 logs deploy/collapse events (2 adds verbose per-frame physics logs), and `DebugDrawRadius` draws a wireframe sphere at the pull radius.
 
-### Two hole types
-Press **F5** to pick what the *next* deploy will be, existing holes keep
-whatever type they were spawned as, so both can be out at once:
-- **Kerr (rotating)** — accretion disk, spiralling motes, lensed arcs, tangential
-  spin force on anything caught in the pull.
-- **Schwarzschild (stationary)** — bare shadow and photon ring only, motes fall
-  straight in cold, no spin force.
+## Requirements & Compatibility
 
-### Physics
-Rigidbodies inside `PullRadius` get pulled toward the well, force scaled by
-`PullForce` and an exponential falloff (`PullFalloff`) that concentrates pull
-near the center. A slight `PullUpward` bias keeps the hole from just yanking
-everything into the floor. Rotating holes add a tangential `SpinForce` around
-the disk normal. Anything that crosses into the visible disk (a fraction of
-the rendered disk radius, set by `AccretionThreshold`) gets crushed and torn
-with extra impulse and torque (`AccretionForce`). The player's own ragdoll is
-excluded. Objects heavier than `MassLimit` are ignored so you can't try to
-suck in something that should never move.
+- **Prerequisites:** MelonLoader 0.7.2+ Installation. [Check out their Tutorial!](https://melonwiki.xyz/#/)
+- **Prerequisites:** [FruitLib](https://github.com/Luca-Nero/FruitLib) in your `Mods/` folder - Singularity will not start without it.
+- **Compatibility:** No known Incompatabilities.
 
-### Visuals
-Everything is built at runtime from procedural ring meshes — no textures.
-Shadow sphere size (`CoreScale`), disk inner/outer radius relative to the
-shadow (`DiskInnerScale` / `DiskOuterScale`), disk tilt randomized per hole
-within `DiskInclination`, Doppler beaming (`DopplerStrength`), a spinning
-swirl overlay, lensed arcs above and below the shadow, and infalling motes
-(`MoteCount`, streaked along their velocity by `MoteStreak`) that spiral in
-over a few seconds. Kerr and Schwarzschild have independent brightness, glow,
-sky-darkening, and RGB tint knobs, since a stationary hole with no disk needs
-a different visual balance than a spinning one. Most emissive layers push
-brightness over 1 (`*EmissionBoost`) and rely on HDR + bloom to read — see
-[FruitLib's VFX notes](https://github.com/Luca-Nero/FruitLib) if bloom isn't visibly kicking in.
+## Installation
 
-### Debug
-`DebugLevel` 1 logs deploy/collapse events, 2 adds verbose per-frame physics
-logs. `DebugDrawRadius` draws a wireframe sphere at the pull radius. **F9**
-dumps every currently loaded shader name to `SingularityShaderDump.txt` next
-to the DLL — useful when hunting for a shader by name.
-
-### HUD & Perf
-A HUD panel shows the deploy key, current next-spawn type, and while any hole
-is active: count, affected body count, and pull radius/force. FruitLib's perf
-monitor (**F11**) gets two extra counters: active singularities and total
-affected rigidbodies across all of them.
-
----
-
-## How to Install
-1. Install [FruitLib](https://github.com/Luca-Nero/FruitLib) first, Singularity won't start without it.
-2. Drag **Singularity.dll** into your `Mods/` folder.
-3. Run the game — `SingularityConfig.ini` appears next to the DLL on first launch.
-
-## How to Update
-1. Drop in the new DLL — the config is rewritten on load with any new fields
-   added and stale ones removed.
-
----
+1. Download the latest release from the [Releases page](../../releases/latest).
+2. Extract the archive.
+3. Drop the contents into your game's `Mods/` directory.
 
 ## Controls (Defaults)
 
@@ -78,13 +42,18 @@ affected rigidbodies across all of them.
 | B | Deploy singularity at aim point |
 | F5 | Toggle next-deploy type (Kerr / Schwarzschild) |
 
-Remap in `SingularityConfig.ini`, or live in FruitLib's menu.
+## Configuration
+
+`SingularityConfig.ini` is created next to the DLL on first launch. It is sectioned and documented - Controls, Physics, Behaviour, Visuals, Disk (Kerr only), Kerr, Schwarzschild, and Debug - with a comment on each field explaining what it does. The in-game FruitLib menu mirrors the same categories, and the file is rewritten on load so new fields appear on update while stale ones are dropped.
 
 ---
 
-## Config
+## Support & Feedback
 
-Every parameter is in a sectioned, documented `.ini` file — Controls, Physics,
-Behaviour, Visuals, Disk (Kerr only), Kerr, Schwarzschild, and Debug. Each
-field's `.ini` comment explains what it does; the in-game FruitLib menu
-mirrors the same categories.
+Found a bug or have a suggestion? Feel free to open an issue on the [Issues page](../../issues) or catch me on Discord.
+
+If you enjoy my work and want to support future updates, feel free to [buy me a coffee on Ko-fi](https://ko-fi.com/Luca_Nero)!
+
+## License
+
+[MIT](LICENSE) © Luca Nero / Game Community

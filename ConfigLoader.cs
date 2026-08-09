@@ -104,8 +104,6 @@ namespace Singularity
 
             ["DebugLevel"] = "0 = silent, 1 = events, 2 = verbose per-frame",
             ["DebugDrawRadius"] = "draw a wireframe sphere showing pull radius",
-            ["ShaderDumpKey"] = "dumps every loaded shader name to SingularityShaderDump.txt",
-            ["ExperimentalDistortion"] = "test sphere using the game's 'Unify' blur shader -- it is a UI backdrop shader, so on a world-space mesh it renders as a pale sphere that flattens all contrast. Off by default",
         };
 
         private static bool IsRenderable(Type t) =>
