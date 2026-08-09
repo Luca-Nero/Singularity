@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
 
-[assembly: MelonInfo(typeof(Singularity.Core), "Singularity", "1.0.1", "Luca_Nero")]
+[assembly: MelonInfo(typeof(Singularity.Core), "Singularity", Singularity.Core.Version, "Luca_Nero")]
 [assembly: MelonGame()]
 
 namespace Singularity
@@ -12,7 +12,7 @@ namespace Singularity
 
     public class Core : MelonMod
     {
-        public const string Version = "1.0.1";
+        public const string Version = "1.0.2";
 
         // ── Input ───────────────────────────────────────────────────────────────
         private static float _deployCooldown;
