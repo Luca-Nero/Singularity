@@ -14,8 +14,6 @@ namespace Singularity
         [FruitLib.MenuCategory("Physics")] public static float PullFalloff = 2f;
         [FruitLib.MenuCategory("Physics")] public static float PullUpward = 0.5f;
         [FruitLib.MenuCategory("Physics")] public static float SpinForce = 2f;
-        // Fraction of the VISIBLE disk radius, not of PullRadius. 1 = shred anything
-        // inside the glowing disk.
         [FruitLib.MenuCategory("Physics")] public static float AccretionThreshold = 1f;
         [FruitLib.MenuCategory("Physics")] public static float AccretionForce = 20f;
 
@@ -69,9 +67,7 @@ namespace Singularity
         // ── Debug ─────────────────────────────────────────────────────────────────
         [FruitLib.MenuCategory("Debug")] public static int DebugLevel = 0;
         [FruitLib.MenuCategory("Debug")] public static bool DebugDrawRadius = false;
-        [FruitLib.MenuCategory("Debug")] public static float DebugRayDuration = 1f;
-        [FruitLib.MenuCategory("Debug")] public static KeyCode ShaderDumpKey = KeyCode.F9;
-        [FruitLib.MenuCategory("Debug")] public static bool ExperimentalDistortion = false;
+        [FruitLib.MenuCategory("Debug")] public static KeyCode ShaderDumpKey = KeyCode.Z;
 
         // ── Helpers ───────────────────────────────────────────────────────────────
         public static bool Dbg1 => DebugLevel >= 1;

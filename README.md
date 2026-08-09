@@ -2,7 +2,7 @@
 
 Deploy portable gravity wells that pull, spin, and shred anything nearby, with
 a fully procedural black hole rendered in Unity meshes — no video, no
-pre-baked sprite. Runs on [FruitLib](../5_FruitLib).
+pre-baked sprite. Runs on FruitLib.
 
 ---
 
@@ -61,7 +61,7 @@ affected rigidbodies across all of them.
 ---
 
 ## How to Install
-1. Install [FruitLib](../5_FruitLib) first — Singularity won't start without it.
+1. Install FruitLib first, Singularity won't start without it.
 2. Drag **Singularity.dll** into your `Mods/` folder.
 3. Run the game — `SingularityConfig.ini` appears next to the DLL on first launch.
 
@@ -75,9 +75,8 @@ affected rigidbodies across all of them.
 
 | Key | Action |
 |-----|--------|
-| R | Deploy singularity at aim point |
+| Z | Deploy singularity at aim point |
 | F5 | Toggle next-deploy type (Kerr / Schwarzschild) |
-| F9 | Dump loaded shader names to `SingularityShaderDump.txt` |
 
 Remap in `SingularityConfig.ini`, or live in FruitLib's menu.
 

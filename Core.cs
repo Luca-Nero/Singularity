@@ -50,11 +50,6 @@ namespace Singularity
                     LoggerInstance.Msg($"Next singularity: {(Config.SpawnRotating ? "Kerr (rotating)" : "Schwarzschild (stationary)")}");
                 }
 
-                if (Input.GetKeyDown(Config.ShaderDumpKey))
-                {
-                    DumpAllShaders();
-                }
-
                 _deployCooldown = Mathf.Max(0f, _deployCooldown - dt);
             }
 
@@ -94,36 +89,5 @@ namespace Singularity
                 p.Line($"       Spin={Config.SpinForce} Acc={Config.AccretionThreshold}", HudPanel.Dim);
             }
         }
-
-        private static void DumpAllShaders()
-        {
-            try
-            {
-                var shaders = Resources.FindObjectsOfTypeAll<Shader>();
-                var names = new List<string>();
-                foreach (var s in shaders)
-                {
-                    if (s == null) continue;
-                    names.Add(s.name);
-                }
-                names.Sort(System.StringComparer.OrdinalIgnoreCase);
-
-                string path = System.IO.Path.Combine(
-                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                    "SingularityShaderDump.txt");
-
-                var sb = new System.Text.StringBuilder();
-                sb.AppendLine($"# {names.Count} shaders loaded at time of dump");
-                foreach (var n in names) sb.AppendLine(n);
-
-                System.IO.File.WriteAllText(path, sb.ToString());
-                MelonLogger.Msg($"[Singularity] Dumped {names.Count} shader names to {path}");
-            }
-            catch (System.Exception e)
-            {
-                MelonLogger.Warning($"[Singularity] Shader dump failed: {e.Message}");
-            }
-        }
-
     }
 }
