@@ -1,37 +1,66 @@
 using FruitLib;
+using HarmonyLib;
 using MelonLoader;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-using HarmonyLib;
 
 [assembly: MelonInfo(typeof(Singularity.Core), "Singularity", Singularity.Core.Version, "Luca_Nero")]
 [assembly: MelonGame()]
+[assembly: MelonOptionalDependencies("FruitLib")]
+[assembly: HarmonyDontPatchAll]
 
 namespace Singularity
 {
 
     public class Core : MelonMod
     {
-        public const string Version = "1.0.4";
+        public const string Version = "1.0.5";
 
         // ── Input ───────────────────────────────────────────────────────────────
         private static float _deployCooldown;
 
+        // ── FruitLib dependency ──────────────────────────────────────────────
+        private const int LibMajor = 2, LibMinor = 0, LibPatch = 0;
+        private bool _active;
+
         public override void OnInitializeMelon()
+        {
+            _active = FruitGate.Check("Singularity", LibMajor, LibMinor, LibPatch);
+            if (!_active) return;
+
+            Init();
+        }
+
+        public override void OnLateInitializeMelon()
+        {
+            if (_active) return;
+            try { Unregister(FruitGate.FailureReason, silent: true); } catch { }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void Init()
         {
             ConfigLoader.Load();
             FruitMenu.Register("Singularity", ConfigLoader.IniPath, typeof(Config));
             FruitHud.Register("Singularity", BuildHud, order: 20);
 
             FruitPerfMon.RegisterCounter("Singularities", () => HoleManager.ActiveCount);
-            FruitPerfMon.RegisterCounter("Affected RBs",  () => HoleManager.AffectedRbs());
+            FruitPerfMon.RegisterCounter("Affected RBs", () => HoleManager.AffectedRbs());
 
             FruitUpdateCheck.Register("Singularity", Version, "Luca-Nero", "Singularity");
 
-            LoggerInstance.Msg($"Singularity v{Version} — portable gravity well mod loaded.");
+            LoggerInstance.Msg($"Singularity v{Version} loaded.");
         }
 
         public override void OnUpdate()
+        {
+            if (!_active) return;
+            UpdateBody();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void UpdateBody()
         {
             float dt = Time.deltaTime;
 
@@ -60,10 +89,24 @@ namespace Singularity
 
         public override void OnFixedUpdate()
         {
+            if (!_active) return;
+            FixedUpdateBody();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void FixedUpdateBody()
+        {
             HoleManager.FixedUpdate(Time.fixedDeltaTime);
         }
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            if (!_active) return;
+            SceneLoadedBody(sceneName);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void SceneLoadedBody(string sceneName)
         {
             HoleManager.ClearAll();
             if (Config.Dbg1)
