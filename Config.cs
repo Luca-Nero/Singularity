@@ -7,6 +7,7 @@ namespace Singularity
         // ── Controls ──────────────────────────────────────────────────────────────
         [FruitLib.MenuCategory("Controls")] public static KeyCode DeployKey = KeyCode.B;
         [FruitLib.MenuCategory("Controls")] public static KeyCode HoleTypeKey = KeyCode.F5;
+        [FruitLib.MenuCategory("Controls")] public static KeyCode ClearKey = KeyCode.N;
 
         // ── Physics ───────────────────────────────────────────────────────────────
         [FruitLib.MenuCategory("Physics")] public static float PullRadius = 15f;

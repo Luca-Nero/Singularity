@@ -10,7 +10,7 @@ Deploy portable gravity wells that pull, spin, and shred anything nearby. Each o
 
 ## Features
 
-- **Deploy:** Press **R** to drop a singularity at your aim point. A raycast finds the surface; if nothing is hit, it places at half `SpawnRange` along your view. Half-second cooldown between deploys, and each well collapses and despawns after its `Lifetime`.
+- **Deploy:** Press **B** to drop a singularity at your aim point. A raycast finds the surface; if nothing is hit, it places at half `SpawnRange` along your view. Half-second cooldown between deploys, and each well collapses and despawns after its `Lifetime`.
 - **Two Hole Types:** Press **F5** to choose what the *next* deploy will be. Existing holes keep whatever type they spawned as, so both can be out at once.
     - **Kerr (rotating):** Accretion disk, spiralling motes, lensed arcs, and a tangential spin force on anything caught in the pull.
     - **Schwarzschild (stationary):** Bare shadow and photon ring only. Motes fall straight in, cold, with no spin force.
@@ -40,6 +40,7 @@ Deploy portable gravity wells that pull, spin, and shred anything nearby. Each o
 | Key | Action |
 |-----|--------|
 | B | Deploy singularity at aim point |
+| N | Destroy all Singularities |
 | F5 | Toggle next-deploy type (Kerr / Schwarzschild) |
 
 ## Configuration
@@ -56,4 +57,4 @@ If you enjoy my work and want to support future updates, feel free to [buy me a 
 
 ## License
 
-[MIT](LICENSE) © Luca Nero / Game Community
+[AGPL-3.0](LICENSE) © Luca Nero / Game Community

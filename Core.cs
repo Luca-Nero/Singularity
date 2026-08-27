@@ -15,13 +15,13 @@ namespace Singularity
 
     public class Core : MelonMod
     {
-        public const string Version = "1.0.5";
+        public const string Version = "1.1.0";
 
         // ── Input ───────────────────────────────────────────────────────────────
         private static float _deployCooldown;
 
         // ── FruitLib dependency ──────────────────────────────────────────────
-        private const int LibMajor = 2, LibMinor = 0, LibPatch = 0;
+        private const int LibMajor = 2, LibMinor = 1, LibPatch = 0;
         private bool _active;
 
         public override void OnInitializeMelon()
@@ -44,6 +44,8 @@ namespace Singularity
             ConfigLoader.Load();
             FruitMenu.Register("Singularity", ConfigLoader.IniPath, typeof(Config));
             FruitHud.Register("Singularity", BuildHud, order: 20);
+
+            HoleManager.PublishField();
 
             FruitPerfMon.RegisterCounter("Singularities", () => HoleManager.ActiveCount);
             FruitPerfMon.RegisterCounter("Affected RBs", () => HoleManager.AffectedRbs());
@@ -73,6 +75,11 @@ namespace Singularity
                         HoleManager.TryDeploy();
                         _deployCooldown = 0.5f; // half-second cooldown between deployments
                     }
+                }
+
+                if (Input.GetKeyDown(Config.ClearKey))
+                {
+                    HoleManager.ClearAll();
                 }
 
                 if (Input.GetKeyDown(Config.HoleTypeKey))
@@ -117,6 +124,7 @@ namespace Singularity
         {
             string type = Config.SpawnRotating ? "KERR" : "SCHWARZSCHILD";
             p.Line($"[ {Config.DeployKey} ] Deploy Singularity");
+            p.Line($"[ {Config.ClearKey} ] Clear All Singularities");
             p.Line($"[ {Config.HoleTypeKey} ] Type: {type}");
 
             int active = HoleManager.ActiveCount;

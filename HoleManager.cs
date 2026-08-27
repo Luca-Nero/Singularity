@@ -44,6 +44,37 @@ namespace Singularity
 
         private static readonly List<Rigidbody> _cache = new List<Rigidbody>();
 
+        public static void PublishField() =>
+            FruitLib.FruitForces.Register("Singularity:Wells", AccelerationAt);
+
+        public static void UnpublishField() =>
+            FruitLib.FruitForces.Unregister("Singularity:Wells");
+
+        private static Vector3 AccelerationAt(Vector3 position)
+        {
+            if (_wells.Count == 0) return Vector3.zero;
+
+            Vector3 total = Vector3.zero;
+            float radius = Config.PullRadius;
+
+            for (int i = 0; i < _wells.Count; i++)
+            {
+                var well = _wells[i];
+                if (well == null || well.Dead) continue;
+
+                Vector3 toWell = well.Position - position;
+                float dist = toWell.magnitude;
+                if (dist < 0.01f || dist > radius) continue;
+
+                float edge    = 1f - (dist / radius);                                  // 1 at centre, 0 at edge
+                float falloff = Mathf.Pow(edge, Mathf.Max(0.01f, Config.PullFalloff));
+
+                total += (toWell / dist) * (Config.PullForce * falloff);
+            }
+
+            return total;
+        }
+
         // ── Deployment ──────────────────────────────────────────────────────────
 
         public static void TryDeploy()
