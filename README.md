@@ -47,7 +47,9 @@ Deploy portable gravity wells that pull, spin, and shred anything nearby. Each o
 
 `SingularityConfig.ini` is created next to the DLL on first launch. It is sectioned and documented - Controls, Physics, Behaviour, Visuals, Disk (Kerr only), Kerr, Schwarzschild, and Debug - with a comment on each field explaining what it does. The in-game FruitLib menu mirrors the same categories, and the file is rewritten on load so new fields appear on update while stale ones are dropped.
 
----
+## Credits
+
+Shoutout to @a.penguin.fr on Discord for suggesting the clear all hotkey.
 
 ## Support & Feedback
 
