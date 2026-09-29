@@ -19,7 +19,7 @@ namespace Singularity
         //         keyboard binds removed, HUD only shows while the slot is in hand.
         // 2.0.0 = release build: one inventory item per hole type (Kerr / Schwarzschild) instead
         //         of a wheel-cycled toolbar slot; SpawnRotating config removed. Needs FruitLib 4.
-        public const string Version = "2.0.0";
+        public const string Version = "2.0.1";
 
         // ── Input ───────────────────────────────────────────────────────────────
         private static float _deployCooldown;

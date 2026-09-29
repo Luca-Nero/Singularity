@@ -16,10 +16,10 @@ namespace Singularity
     {
         // ── Physics ───────────────────────────────────────────────────────────────
 
-        [MenuCategory("Physics"), MenuLabel("Pull radius (m)"), MenuRange(1, 60)]
+        [MenuCategory("Physics"), MenuLabel("Pull radius (m)"), MenuRange(1, 600)]
         public static float PullRadius = 15f;
 
-        [MenuCategory("Physics"), MenuLabel("Pull strength"), MenuRange(0, 50)]
+        [MenuCategory("Physics"), MenuLabel("Pull strength"), MenuRange(0, 5000)]
         public static float PullForce = 8f;
 
         [MenuCategory("Physics"), MenuLabel("Falloff exponent"), MenuRange(0, 5)]
@@ -39,10 +39,10 @@ namespace Singularity
 
         // ── Behaviour ─────────────────────────────────────────────────────────────
 
-        [MenuCategory("Behaviour"), MenuLabel("Lifetime (s)"), MenuRange(1, 60)]
+        [MenuCategory("Behaviour"), MenuLabel("Lifetime (s)"), MenuRange(1, 300)]
         public static float Lifetime = 12f;
 
-        [MenuCategory("Behaviour"), MenuLabel("Deploy range (m)"), MenuRange(5, 100)]
+        [MenuCategory("Behaviour"), MenuLabel("Deploy range (m)"), MenuRange(5, 200)]
         public static float SpawnRange = 40f;
 
         [MenuCategory("Behaviour"), MenuLabel("Heaviest body pulled (kg)"), MenuRange(0, 2000)]
