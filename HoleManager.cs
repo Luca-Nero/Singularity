@@ -1,3 +1,4 @@
+﻿using FruitLib;
 using MelonLoader;
 using System.Collections.Generic;
 using UnityEngine;
@@ -77,7 +78,7 @@ namespace Singularity
 
         // ── Deployment ──────────────────────────────────────────────────────────
 
-        public static void TryDeploy()
+        public static void TryDeploy(bool rotating)
         {
             var cam = Camera.main;
             if (cam == null) return;
@@ -103,7 +104,7 @@ namespace Singularity
                 MelonLogger.Msg($"[Singularity][LOG] Raycast {(rayHit ? "HIT at " + hit.point.ToString("F1") : "MISS (fallback)")} → placePos={placePos:F1}");
             }
 
-            var well = new GravityWell(placePos, Config.Lifetime, Config.SpawnRotating,
+            var well = new GravityWell(placePos, Config.Lifetime, rotating,
                 HoleVFX.RandomDiskTilt());
             _wells.Add(well);
 
@@ -278,7 +279,12 @@ namespace Singularity
             if (--_pollPlayerCountdown > 0) return false;
             _pollPlayerCountdown = 120;
 
-            var pelvis = Object.FindObjectOfType<Il2CppActiveRagdoll.Scripts.Pelvis>(true);
+            // FruitScene rather than Object.FindObjectOfType<T>: the SINGULAR overload is
+            // stripped from this build and throws at runtime, while compiling cleanly. It
+            // would have failed quietly in the worst place - no player rigidbody means no
+            // player exclusion, so the singularity would have hauled the player in with
+            // everything else and looked like a physics bug rather than a missing method.
+            var pelvis = FruitScene.First<Il2CppActiveRagdoll.Scripts.Pelvis>();
             if (pelvis != null)
                 _playerRb = pelvis.m_rb;
 

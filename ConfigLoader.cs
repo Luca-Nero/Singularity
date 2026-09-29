@@ -50,8 +50,6 @@ namespace Singularity
 
         private static readonly Dictionary<string, string> FieldHelp = new Dictionary<string, string>
         {
-            ["DeployKey"] = "key to deploy a singularity at your look target",
-
             ["PullRadius"] = "radius in metres within which rigidbodies are affected",
             ["PullForce"] = "inward pull strength applied to affected rigidbodies",
             ["PullFalloff"] = "falloff exponent on (1 - dist/radius): 1 = linear, 2 = quadratic (default), higher = pull concentrated near the centre",
@@ -65,8 +63,6 @@ namespace Singularity
             ["MassLimit"] = "rigidbodies heavier than this are ignored (safety against immovable objects)",
 
             ["CoreScale"] = "size multiplier for the shadow (event horizon) sphere",
-            ["HoleTypeKey"] = "toggles the type of the NEXT singularity between Kerr and Schwarzschild",
-            ["SpawnRotating"] = "type for the next deploy: true = rotating (Kerr, accretion disk + lensed arcs + spiralling motes), false = stationary (Schwarzschild, bare shadow, motes fall straight in cold). Each hole keeps whatever it was deployed as, so the two can coexist",
             ["DiskInclination"] = "maximum disk tilt in degrees. Each hole rolls its own tilt in [-this, +this] plus a random azimuth, so no two look alike. 0 = every disk perfectly edge-on",
             ["DiskInnerScale"] = "disk inner edge (the ISCO) in units of the shadow radius. 1.15 is physical -- the innermost stable orbit sits just outside the shadow, so hot disk material runs right up to the rim. Raise it to open a dark gap between the rim and the disk",
             ["DiskOuterScale"] = "disk outer radius in units of the shadow radius",

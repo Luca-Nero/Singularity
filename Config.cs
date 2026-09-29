@@ -1,78 +1,174 @@
+using FruitLib;
 using UnityEngine;
 
 namespace Singularity
 {
+    /// <summary>
+    /// Every value the mod reads, and how the mod menu should draw it.
+    ///
+    /// Ranges are not decoration. Without one FruitLib guesses from the default, and the
+    /// guess is wrong in the direction that matters here: most of these end up inside a
+    /// <c>Clamp01</c> in <see cref="HoleVFX"/>, so a derived 0..4 slider would spend three
+    /// quarters of its travel doing nothing. Where a value is clamped downstream, the
+    /// range below matches the clamp.
+    /// </summary>
     internal static class Config
     {
-        // ── Controls ──────────────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Controls")] public static KeyCode DeployKey = KeyCode.B;
-        [FruitLib.MenuCategory("Controls")] public static KeyCode HoleTypeKey = KeyCode.F5;
-        [FruitLib.MenuCategory("Controls")] public static KeyCode ClearKey = KeyCode.N;
-
         // ── Physics ───────────────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Physics")] public static float PullRadius = 15f;
-        [FruitLib.MenuCategory("Physics")] public static float PullForce = 8f;
-        [FruitLib.MenuCategory("Physics")] public static float PullFalloff = 2f;
-        [FruitLib.MenuCategory("Physics")] public static float PullUpward = 0.5f;
-        [FruitLib.MenuCategory("Physics")] public static float SpinForce = 2f;
-        [FruitLib.MenuCategory("Physics")] public static float AccretionThreshold = 1f;
-        [FruitLib.MenuCategory("Physics")] public static float AccretionForce = 20f;
+
+        [MenuCategory("Physics"), MenuLabel("Pull radius (m)"), MenuRange(1, 60)]
+        public static float PullRadius = 15f;
+
+        [MenuCategory("Physics"), MenuLabel("Pull strength"), MenuRange(0, 50)]
+        public static float PullForce = 8f;
+
+        [MenuCategory("Physics"), MenuLabel("Falloff exponent"), MenuRange(0, 5)]
+        public static float PullFalloff = 2f;
+
+        [MenuCategory("Physics"), MenuLabel("Upward bias"), MenuRange(0, 2)]
+        public static float PullUpward = 0.5f;
+
+        [MenuCategory("Physics"), MenuLabel("Frame dragging (Kerr)"), MenuRange(0, 20)]
+        public static float SpinForce = 2f;
+
+        [MenuCategory("Physics"), MenuLabel("Accretion distance"), MenuRange(0, 10)]
+        public static float AccretionThreshold = 1f;
+
+        [MenuCategory("Physics"), MenuLabel("Accretion violence"), MenuRange(0, 100)]
+        public static float AccretionForce = 20f;
 
         // ── Behaviour ─────────────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Behaviour")] public static float Lifetime = 12f;
-        [FruitLib.MenuCategory("Behaviour")] public static float SpawnRange = 40f;
-        [FruitLib.MenuCategory("Behaviour")] public static float MassLimit = 200f;
-        [FruitLib.MenuCategory("Behaviour")] public static bool SpawnRotating = true;
+
+        [MenuCategory("Behaviour"), MenuLabel("Lifetime (s)"), MenuRange(1, 60)]
+        public static float Lifetime = 12f;
+
+        [MenuCategory("Behaviour"), MenuLabel("Deploy range (m)"), MenuRange(5, 100)]
+        public static float SpawnRange = 40f;
+
+        [MenuCategory("Behaviour"), MenuLabel("Heaviest body pulled (kg)"), MenuRange(0, 2000)]
+        public static float MassLimit = 200f;
 
         // ── Visuals (shared by both hole types) ───────────────────────────────────
-        [FruitLib.MenuCategory("Visuals")] public static float CoreScale = 0.5f;
-        [FruitLib.MenuCategory("Visuals")] public static int MoteCount = 40;
-        [FruitLib.MenuCategory("Visuals")] public static float MoteSize = 0.12f;
-        [FruitLib.MenuCategory("Visuals")] public static float MoteSpeed = 1f;
-        [FruitLib.MenuCategory("Visuals")] public static float MoteStreak = 1f;
-        [FruitLib.MenuCategory("Visuals")] public static float PulseSpeed = 2f;
-        [FruitLib.MenuCategory("Visuals")] public static float RingRotationSpeed = 3f;
+
+        [MenuCategory("Visuals"), MenuLabel("Core size"), MenuRange(0.1f, 3)]
+        public static float CoreScale = 0.5f;
+
+        [MenuCategory("Visuals"), MenuLabel("Mote count"), MenuRange(0, 200)]
+        public static int MoteCount = 40;
+
+        [MenuCategory("Visuals"), MenuLabel("Mote size"), MenuRange(0.01f, 1)]
+        public static float MoteSize = 0.12f;
+
+        [MenuCategory("Visuals"), MenuLabel("Mote speed"), MenuRange(0.05f, 5)]
+        public static float MoteSpeed = 1f;
+
+        [MenuCategory("Visuals"), MenuLabel("Mote streaking"), MenuRange(0, 5)]
+        public static float MoteStreak = 1f;
+
+        [MenuCategory("Visuals"), MenuLabel("Pulse speed"), MenuRange(0, 10)]
+        public static float PulseSpeed = 2f;
+
+        [MenuCategory("Visuals"), MenuLabel("Ring rotation speed"), MenuRange(0, 20)]
+        public static float RingRotationSpeed = 3f;
 
         // ── Disk (Kerr only) ──────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Disk")] public static float DiskInclination = 12f;
-        [FruitLib.MenuCategory("Disk")] public static float DiskInnerScale = 1.15f;
-        [FruitLib.MenuCategory("Disk")] public static float DiskOuterScale = 4.5f;
-        [FruitLib.MenuCategory("Disk")] public static float DiskBrightness = 1f;
-        [FruitLib.MenuCategory("Disk")] public static float DopplerStrength = 1f;
-        [FruitLib.MenuCategory("Disk")] public static float SwirlStrength = 0.5f;
-        [FruitLib.MenuCategory("Disk")] public static float SwirlSpeed = 6f;
-        [FruitLib.MenuCategory("Disk")] public static float LensedArcStrength = 1f;
+
+        [MenuCategory("Disk"), MenuLabel("Inclination (deg)"), MenuRange(0, 90)]
+        public static float DiskInclination = 12f;
+
+        [MenuCategory("Disk"), MenuLabel("Inner edge"), MenuRange(1.02f, 3.5f)]
+        public static float DiskInnerScale = 1.15f;
+
+        [MenuCategory("Disk"), MenuLabel("Outer edge"), MenuRange(1.5f, 10)]
+        public static float DiskOuterScale = 4.5f;
+
+        [MenuCategory("Disk"), MenuLabel("Brightness"), MenuRange(0, 1)]
+        public static float DiskBrightness = 1f;
+
+        [MenuCategory("Disk"), MenuLabel("Doppler beaming"), MenuRange(0, 1)]
+        public static float DopplerStrength = 1f;
+
+        [MenuCategory("Disk"), MenuLabel("Swirl strength"), MenuRange(0, 1)]
+        public static float SwirlStrength = 0.5f;
+
+        [MenuCategory("Disk"), MenuLabel("Swirl speed"), MenuRange(0, 30)]
+        public static float SwirlSpeed = 6f;
+
+        [MenuCategory("Disk"), MenuLabel("Lensed arcs"), MenuRange(0, 2)]
+        public static float LensedArcStrength = 1f;
 
         // ── Kerr (rotating) ───────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Kerr")] public static float KerrPhotonRingBrightness = 0.5f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrGlowStrength = 0.2f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrSkyDarken = 0.65f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrSkyDarkenRadius = 6f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrMoteBrightness = 1f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrEmissionBoost = 1.6f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrTintR = 1f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrTintG = 1f;
-        [FruitLib.MenuCategory("Kerr")] public static float KerrTintB = 1f;
+
+        [MenuCategory("Kerr"), MenuLabel("Photon ring"), MenuRange(0, 2)]
+        public static float KerrPhotonRingBrightness = 0.5f;
+
+        [MenuCategory("Kerr"), MenuLabel("Glow"), MenuRange(0, 1)]
+        public static float KerrGlowStrength = 0.2f;
+
+        [MenuCategory("Kerr"), MenuLabel("Sky darkening"), MenuRange(0, 1)]
+        public static float KerrSkyDarken = 0.65f;
+
+        [MenuCategory("Kerr"), MenuLabel("Darkening radius"), MenuRange(0, 30)]
+        public static float KerrSkyDarkenRadius = 6f;
+
+        [MenuCategory("Kerr"), MenuLabel("Mote brightness"), MenuRange(0, 3)]
+        public static float KerrMoteBrightness = 1f;
+
+        [MenuCategory("Kerr"), MenuLabel("Emission boost"), MenuRange(0, 5)]
+        public static float KerrEmissionBoost = 1.6f;
+
+        [MenuCategory("Kerr"), MenuLabel("Tint, red"), MenuRange(0, 1)]
+        public static float KerrTintR = 1f;
+
+        [MenuCategory("Kerr"), MenuLabel("Tint, green"), MenuRange(0, 1)]
+        public static float KerrTintG = 1f;
+
+        [MenuCategory("Kerr"), MenuLabel("Tint, blue"), MenuRange(0, 1)]
+        public static float KerrTintB = 1f;
 
         // ── Schwarzschild (stationary) ────────────────────────────────────────────
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwPhotonRingBrightness = 0.5f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwGlowStrength = 0.14f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwSkyDarken = 0.65f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwSkyDarkenRadius = 6f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwMoteBrightness = 1f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwEmissionBoost = 1.6f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwTintR = 1f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwTintG = 1f;
-        [FruitLib.MenuCategory("Schwarzschild")] public static float SchwTintB = 1f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Photon ring"), MenuRange(0, 2)]
+        public static float SchwPhotonRingBrightness = 0.5f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Glow"), MenuRange(0, 1)]
+        public static float SchwGlowStrength = 0.14f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Sky darkening"), MenuRange(0, 1)]
+        public static float SchwSkyDarken = 0.65f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Darkening radius"), MenuRange(0, 30)]
+        public static float SchwSkyDarkenRadius = 6f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Mote brightness"), MenuRange(0, 3)]
+        public static float SchwMoteBrightness = 1f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Emission boost"), MenuRange(0, 5)]
+        public static float SchwEmissionBoost = 1.6f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Tint, red"), MenuRange(0, 1)]
+        public static float SchwTintR = 1f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Tint, green"), MenuRange(0, 1)]
+        public static float SchwTintG = 1f;
+
+        [MenuCategory("Schwarzschild"), MenuLabel("Tint, blue"), MenuRange(0, 1)]
+        public static float SchwTintB = 1f;
 
         // ── Debug ─────────────────────────────────────────────────────────────────
-        [FruitLib.MenuCategory("Debug")] public static int DebugLevel = 0;
-        [FruitLib.MenuCategory("Debug")] public static bool DebugDrawRadius = false;
+
+        [MenuCategory("Debug"), MenuLabel("Logging detail"), MenuRange(0, 2)]
+        public static int DebugLevel = 0;
+
+        [MenuCategory("Debug"), MenuLabel("Draw pull radius")]
+        public static bool DebugDrawRadius = false;
 
         // ── Helpers ───────────────────────────────────────────────────────────────
+
         public static bool Dbg1 => DebugLevel >= 1;
         public static bool Dbg2 => DebugLevel >= 2;
     }
+
     internal struct HoleLook
     {
         public bool Rotating;
