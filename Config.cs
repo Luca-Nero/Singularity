@@ -62,13 +62,13 @@ namespace Singularity
         [MenuCategory("Visuals"), MenuLabel("Mote speed"), MenuRange(0.05f, 5)]
         public static float MoteSpeed = 1f;
 
-        [MenuCategory("Visuals"), MenuLabel("Mote streaking"), MenuRange(0, 5)]
+        [MenuLabel("Mote streaking"), MenuRange(0, 5)]
         public static float MoteStreak = 1f;
 
-        [MenuCategory("Visuals"), MenuLabel("Pulse speed"), MenuRange(0, 10)]
+        [MenuLabel("Pulse speed"), MenuRange(0, 10)]
         public static float PulseSpeed = 2f;
 
-        [MenuCategory("Visuals"), MenuLabel("Ring rotation speed"), MenuRange(0, 20)]
+        [MenuLabel("Ring rotation speed"), MenuRange(0, 20)]
         public static float RingRotationSpeed = 3f;
 
         // ── Disk (Kerr only) ──────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ namespace Singularity
         [MenuCategory("Disk"), MenuLabel("Inclination (deg)"), MenuRange(0, 90)]
         public static float DiskInclination = 12f;
 
-        [MenuCategory("Disk"), MenuLabel("Inner edge"), MenuRange(1.02f, 3.5f)]
+        [MenuLabel("Inner edge"), MenuRange(1.02f, 3.5f)]
         public static float DiskInnerScale = 1.15f;
 
         [MenuCategory("Disk"), MenuLabel("Outer edge"), MenuRange(1.5f, 10)]
@@ -85,13 +85,13 @@ namespace Singularity
         [MenuCategory("Disk"), MenuLabel("Brightness"), MenuRange(0, 1)]
         public static float DiskBrightness = 1f;
 
-        [MenuCategory("Disk"), MenuLabel("Doppler beaming"), MenuRange(0, 1)]
+        [MenuLabel("Doppler beaming"), MenuRange(0, 1)]
         public static float DopplerStrength = 1f;
 
-        [MenuCategory("Disk"), MenuLabel("Swirl strength"), MenuRange(0, 1)]
+        [MenuLabel("Swirl strength"), MenuRange(0, 1)]
         public static float SwirlStrength = 0.5f;
 
-        [MenuCategory("Disk"), MenuLabel("Swirl speed"), MenuRange(0, 30)]
+        [MenuLabel("Swirl speed"), MenuRange(0, 30)]
         public static float SwirlSpeed = 6f;
 
         [MenuCategory("Disk"), MenuLabel("Lensed arcs"), MenuRange(0, 2)]
@@ -99,22 +99,22 @@ namespace Singularity
 
         // ── Kerr (rotating) ───────────────────────────────────────────────────────
 
-        [MenuCategory("Kerr"), MenuLabel("Photon ring"), MenuRange(0, 2)]
+        [MenuLabel("Photon ring"), MenuRange(0, 2)]
         public static float KerrPhotonRingBrightness = 0.5f;
 
         [MenuCategory("Kerr"), MenuLabel("Glow"), MenuRange(0, 1)]
         public static float KerrGlowStrength = 0.2f;
 
-        [MenuCategory("Kerr"), MenuLabel("Sky darkening"), MenuRange(0, 1)]
+        [MenuLabel("Sky darkening"), MenuRange(0, 1)]
         public static float KerrSkyDarken = 0.65f;
 
-        [MenuCategory("Kerr"), MenuLabel("Darkening radius"), MenuRange(0, 30)]
+        [MenuLabel("Darkening radius"), MenuRange(0, 30)]
         public static float KerrSkyDarkenRadius = 6f;
 
-        [MenuCategory("Kerr"), MenuLabel("Mote brightness"), MenuRange(0, 3)]
+        [MenuLabel("Mote brightness"), MenuRange(0, 3)]
         public static float KerrMoteBrightness = 1f;
 
-        [MenuCategory("Kerr"), MenuLabel("Emission boost"), MenuRange(0, 5)]
+        [MenuLabel("Emission boost"), MenuRange(0, 5)]
         public static float KerrEmissionBoost = 1.6f;
 
         [MenuCategory("Kerr"), MenuLabel("Tint, red"), MenuRange(0, 1)]
@@ -128,22 +128,22 @@ namespace Singularity
 
         // ── Schwarzschild (stationary) ────────────────────────────────────────────
 
-        [MenuCategory("Schwarzschild"), MenuLabel("Photon ring"), MenuRange(0, 2)]
+        [MenuLabel("Photon ring"), MenuRange(0, 2)]
         public static float SchwPhotonRingBrightness = 0.5f;
 
         [MenuCategory("Schwarzschild"), MenuLabel("Glow"), MenuRange(0, 1)]
         public static float SchwGlowStrength = 0.14f;
 
-        [MenuCategory("Schwarzschild"), MenuLabel("Sky darkening"), MenuRange(0, 1)]
+        [MenuLabel("Sky darkening"), MenuRange(0, 1)]
         public static float SchwSkyDarken = 0.65f;
 
-        [MenuCategory("Schwarzschild"), MenuLabel("Darkening radius"), MenuRange(0, 30)]
+        [MenuLabel("Darkening radius"), MenuRange(0, 30)]
         public static float SchwSkyDarkenRadius = 6f;
 
-        [MenuCategory("Schwarzschild"), MenuLabel("Mote brightness"), MenuRange(0, 3)]
+        [MenuLabel("Mote brightness"), MenuRange(0, 3)]
         public static float SchwMoteBrightness = 1f;
 
-        [MenuCategory("Schwarzschild"), MenuLabel("Emission boost"), MenuRange(0, 5)]
+        [MenuLabel("Emission boost"), MenuRange(0, 5)]
         public static float SchwEmissionBoost = 1.6f;
 
         [MenuCategory("Schwarzschild"), MenuLabel("Tint, red"), MenuRange(0, 1)]

@@ -27,7 +27,7 @@ Deploy portable gravity wells that pull, spin, and shred anything nearby. Each o
 ## Requirements & Compatibility
 
 - **Prerequisites:** MelonLoader 0.7.2+ Installation. [Check out their Tutorial!](https://melonwiki.xyz/#/)
-- **Prerequisites:** [FruitLib](https://github.com/Luca-Nero/FruitLib) 4.0.0+ in your `Mods/` folder - Singularity will not start without it.
+- **Prerequisites:** [FruitLib](https://github.com/Luca-Nero/FruitLib) 5.2.0+ in your `Mods/` folder - Singularity will not start without it.
 - **Compatibility:** No known Incompatabilities.
 
 ## Installation
@@ -47,7 +47,7 @@ Select the Kerr or Schwarzschild item, then:
 
 ## Configuration
 
-`SingularityConfig.ini` is created next to the DLL on first launch. It is sectioned and documented - Physics, Behaviour, Visuals, Disk (Kerr only), Kerr, Schwarzschild, and Debug - with a comment on each field explaining what it does. The in-game FruitLib menu mirrors the same categories, and the file is rewritten on load so new fields appear on update while stale ones are dropped.
+`SingularityConfig.ini` is created in MelonLoader's `UserData` folder on first launch (an older copy next to the DLL in `Mods` is moved there automatically). It is sectioned and documented - Physics, Behaviour, Visuals, Disk (Kerr only), Kerr, Schwarzschild, Debug, and an Advanced section of fine-tuning that is not in the menu - with a comment on each field explaining what it does. The in-game FruitLib menu shows the same categories, and the file is rewritten on load so new fields appear on update while stale ones are dropped.
 
 ## Credits
 

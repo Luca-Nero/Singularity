@@ -19,13 +19,13 @@ namespace Singularity
         //         keyboard binds removed, HUD only shows while the slot is in hand.
         // 2.0.0 = release build: one inventory item per hole type (Kerr / Schwarzschild) instead
         //         of a wheel-cycled toolbar slot; SpawnRotating config removed. Needs FruitLib 4.
-        public const string Version = "2.0.1";
+        public const string Version = "2.0.2";
 
         // ── Input ───────────────────────────────────────────────────────────────
         private static float _deployCooldown;
 
         // ── FruitLib dependency ──────────────────────────────────────────────
-        private const int LibMajor = 4, LibMinor = 0, LibPatch = 0;
+        private const int LibMajor = 5, LibMinor = 5, LibPatch = 0;
         private bool _active;
 
         public override void OnInitializeMelon()
@@ -45,15 +45,18 @@ namespace Singularity
         [MethodImpl(MethodImplOptions.NoInlining)]
         private void Init()
         {
+            // Before the ini is read, so Reset to Defaults goes back to the code's values.
+            FruitMenu.CaptureDefaults(typeof(Config));
             ConfigLoader.Load();
-            FruitMenu.Register("Singularity", ConfigLoader.IniPath, typeof(Config));
+            FruitMenu.Register("Singularity", ConfigLoader.IniPath, typeof(Config), ConfigLoader.Write);
             FruitHud.Register("Singularity", BuildHud, order: 20);
             RegisterItems();
 
             HoleManager.PublishField();
 
-            FruitPerfMon.RegisterCounter("Singularities", () => HoleManager.ActiveCount);
-            FruitPerfMon.RegisterCounter("Affected RBs", () => HoleManager.AffectedRbs());
+            var perf = FruitPerfMon.For("Singularity");
+            perf.Counter("Singularities", () => HoleManager.ActiveCount);
+            perf.Counter("Affected RBs", () => HoleManager.AffectedRbs());
 
             FruitUpdateCheck.Register("Singularity", Version, "Luca-Nero", "Singularity");
 

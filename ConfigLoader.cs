@@ -11,9 +11,9 @@ namespace Singularity
 {
     internal static class ConfigLoader
     {
-        public static string IniPath => Path.Combine(
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-            "SingularityConfig.ini");
+        /// <summary>In MelonLoader's UserData, like every FruitLib mod's. A copy an older build
+        /// left next to the DLL in Mods is moved across the first time this is asked.</summary>
+        public static string IniPath => FruitLib.FruitPaths.Config("SingularityConfig.ini", typeof(ConfigLoader).Assembly);
 
         public static void Load()
         {
@@ -117,6 +117,7 @@ namespace Singularity
             sb.AppendLine();
 
             var categories = new List<string>();
+            var advanced   = new List<FieldInfo>();   // no [MenuCategory]: ini-only, not in the menu
             var byCategory = new Dictionary<string, List<FieldInfo>>();
 
             foreach (var f in typeof(Config).GetFields(BindingFlags.Public | BindingFlags.Static))
@@ -124,7 +125,7 @@ namespace Singularity
                 if (f.IsSpecialName || !IsRenderable(f.FieldType)) continue;
                 var attr = (FruitLib.MenuCategoryAttribute)Attribute.GetCustomAttribute(
                     f, typeof(FruitLib.MenuCategoryAttribute));
-                if (attr == null) continue;
+                if (attr == null) { advanced.Add(f); continue; }
 
                 if (!byCategory.TryGetValue(attr.Name, out var list))
                 {
@@ -147,7 +148,19 @@ namespace Singularity
                 sb.AppendLine();
             }
 
-            File.WriteAllText(IniPath, sb.ToString());
+            if (advanced.Count > 0)
+            {
+                sb.AppendLine("# ── Advanced (ini only, not in the menu) ──");
+                foreach (var f in advanced)
+                {
+                    if (FieldHelp.TryGetValue(f.Name, out var help))
+                        sb.AppendLine($"# {f.Name} : {help}");
+                    sb.AppendLine($"{f.Name} = {FormatValue(f)}");
+                }
+                sb.AppendLine();
+            }
+
+            FruitLib.FruitPaths.WriteAllTextAtomic(IniPath, sb.ToString());
         }
 
         private static string FormatValue(FieldInfo f)
